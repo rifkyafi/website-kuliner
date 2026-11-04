@@ -1,0 +1,44 @@
+{"timestamp":"00:00:00.707","source":"Server","level":"LOG","message":""}
+{"timestamp":"00:00:02.961","source":"Browser","level":"INFO","message":"Download the React DevTools for a better development experience: https://react.dev/link/react-devtools"}
+{"timestamp":"00:01:04.828","source":"Server","level":"ERROR","message":"⨯ Error: The default export is not a React Component in \"/page\""}
+{"timestamp":"00:01:04.832","source":"Server","level":"ERROR","message":"⨯ Error: The default export is not a React Component in \"/page\""}
+{"timestamp":"00:01:05.769","source":"Server","level":"ERROR","message":"⨯ Error: The default export is not a React Component in \"/page\""}
+{"timestamp":"00:01:05.775","source":"Server","level":"ERROR","message":"⨯ Error: The default export is not a React Component in \"/page\""}
+{"timestamp":"00:01:06.172","source":"Browser","level":"ERROR","message":"Uncaught Error: The default export is not a React Component in \"/page\""}
+{"timestamp":"00:01:06.173","source":"Server","level":"ERROR","message":"[browser] \"\\u001b[31mUncaught Error: The default export is not a React Component in \\\"/page\\\"\\u001b[39m\""}
+{"timestamp":"00:01:27.306","source":"Server","level":"LOG","message":"✓ Compiled in 14ms"}
+{"timestamp":"00:01:27.644","source":"Browser","level":"INFO","message":"Download the React DevTools for a better development experience: https://react.dev/link/react-devtools"}
+{"timestamp":"00:01:31.347","source":"Server","level":"LOG","message":"✓ Compiled in 35ms"}
+{"timestamp":"00:01:44.299","source":"Server","level":"LOG","message":"✓ Compiled in 102ms"}
+{"timestamp":"00:01:44.396","source":"Server","level":"ERROR","message":"⨯ Error: Functions cannot be passed directly to Client Components unless you explicitly expose it by marking it with \"use server\". Or maybe you meant to call this function rather than return it.\n  {}"}
+{"timestamp":"00:03:10.735","source":"Server","level":"LOG","message":"✓ Compiled in 35ms"}
+{"timestamp":"00:03:11.155","source":"Browser","level":"INFO","message":"Download the React DevTools for a better development experience: https://react.dev/link/react-devtools"}
+{"timestamp":"00:03:22.384","source":"Server","level":"LOG","message":"✓ Compiled in 18ms"}
+{"timestamp":"00:03:22.435","source":"Server","level":"ERROR","message":"⨯ ReferenceError: Beranda is not defined"}
+{"timestamp":"00:05:14.844","source":"Server","level":"LOG","message":"✓ Compiled in 13ms"}
+{"timestamp":"00:05:14.922","source":"Server","level":"ERROR","message":"⨯ ReferenceError: Beranda is not defined"}
+{"timestamp":"00:05:15.246","source":"Browser","level":"INFO","message":"Download the React DevTools for a better development experience: https://react.dev/link/react-devtools"}
+{"timestamp":"00:05:16.610","source":"Server","level":"LOG","message":"✓ Compiled in 32ms"}
+{"timestamp":"00:05:16.669","source":"Server","level":"ERROR","message":"⨯ ReferenceError: Beranda is not defined"}
+{"timestamp":"00:05:16.909","source":"Browser","level":"INFO","message":"Download the React DevTools for a better development experience: https://react.dev/link/react-devtools"}
+{"timestamp":"00:05:20.846","source":"Server","level":"LOG","message":"✓ Compiled in 27ms"}
+{"timestamp":"00:05:21.206","source":"Browser","level":"INFO","message":"Download the React DevTools for a better development experience: https://react.dev/link/react-devtools"}
+{"timestamp":"00:05:27.613","source":"Server","level":"LOG","message":"✓ Compiled in 18ms"}
+{"timestamp":"00:05:27.656","source":"Server","level":"ERROR","message":"⨯ ReferenceError: Beranda is not defined"}
+{"timestamp":"00:05:42.862","source":"Server","level":"LOG","message":"✓ Compiled in 17ms"}
+{"timestamp":"00:05:42.967","source":"Server","level":"ERROR","message":"⨯ ReferenceError: Home is not defined"}
+{"timestamp":"00:05:43.253","source":"Browser","level":"INFO","message":"Download the React DevTools for a better development experience: https://react.dev/link/react-devtools"}
+{"timestamp":"00:05:44.810","source":"Server","level":"LOG","message":"✓ Compiled in 17ms"}
+{"timestamp":"00:05:45.124","source":"Browser","level":"INFO","message":"Download the React DevTools for a better development experience: https://react.dev/link/react-devtools"}
+{"timestamp":"00:06:53.847","source":"Server","level":"LOG","message":"It looks like you're trying to use TypeScript but do not have the required package(s) installed.\nInstalling dependencies\n\nIf you are not trying to use TypeScript, please remove the tsconfig.json file from your package root (and any TypeScript files in your app and pages directories).\n"}
+{"timestamp":"00:06:53.900","source":"Server","level":"LOG","message":"✓ Compiled in 25ms"}
+{"timestamp":"00:06:54.133","source":"Server","level":"LOG","message":""}
+{"timestamp":"00:06:54.133","source":"Server","level":"LOG","message":"Installing devDependencies (npm):"}
+{"timestamp":"00:06:54.133","source":"Server","level":"LOG","message":"- typescript"}
+{"timestamp":"00:06:54.133","source":"Server","level":"LOG","message":"- @types/react"}
+{"timestamp":"00:06:54.134","source":"Server","level":"LOG","message":"- @types/node"}
+{"timestamp":"00:06:54.134","source":"Server","level":"LOG","message":""}
+{"timestamp":"00:06:56.739","source":"Server","level":"LOG","message":"  Turbopack has seen frequent file updates and is waiting for the filesystem to settle (0.5s elapsed so far; last modified: \"\\\\\\\\?\\\\D:\\\\Materi-Kelas\\\\Semester-3\\\\desain-web\\\\website-kuliner\\\\node_modules\\\\typescript\\\\vendor\\\\vscode-jsonrpc\\\\lib\\\\common\\\\sharedArrayCancellation.js\")."}
+{"timestamp":"00:06:57.686","source":"Server","level":"LOG","message":""}
+{"timestamp":"00:06:57.691","source":"Server","level":"LOG","message":""}
+{"timestamp":"00:06:57.691","source":"Server","level":"LOG","message":"  We detected TypeScript in your project and created a tsconfig.json file for you."}
