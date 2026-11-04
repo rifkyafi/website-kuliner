@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 10, "column": 0}, "map": {"version":3,"sources":["file:///D:/Materi-Kelas/Semester-3/desain-web/website-kuliner/app/page.js"],"sourcesContent":["\r\n\r\nexport default function HomePage() {\r\n    return <Beranda />       \r\n}"],"names":["HomePage","Beranda"],"mappings":";;;;;;AAEe,SAASA;IACpB,qBAAO,8OAACC;;;;;AACZ"}}]
+}
