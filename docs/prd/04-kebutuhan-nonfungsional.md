@@ -50,13 +50,13 @@ Alasan: klaim tanpa sumber menghancurkan kepercayaan, satu-satunya diferensiasi 
 - Setiap tampilan data menangani state memuat, kosong, dan error, dipaksa di level tipe lewat `DataState<T>` (`08-model-data.md`)
 - Setiap state punya teks penyebab dan aksi lanjut ("belum ada restoran yang cocok, hapus filter harga"), bukan sekadar "no data"
 
-### NFR-07 Kualitas kode TypeScript
+### NFR-07 Kualitas kode JavaScript dan JSX
 
-- `tsconfig`: `strict: true`, `allowJs: false`, `noUncheckedIndexedAccess: true`
-- Semua komponen dan route berekstensi `.tsx`; modul non-UI `.ts`; `.js` dan `.jsx` dilarang (keputusan pemilik proyek)
-- Tanpa `any` baru; tipe props eksplisit pada semua komponen
+- Semua komponen dan route berekstensi `.jsx`; modul non-UI `.js`; file `.ts` dan `.tsx` tidak dipakai (keputusan pemilik proyek 2026-11-04)
+- Alias impor `@/*` didefinisikan di `jsconfig.json`
+- Karena pemeriksa tipe statis tidak ada, nama fungsi dan props dibuat deskriptif, dan perilaku diverifikasi lewat test serta uji klik
 
 ### NFR-08 Ketahanan
 
-- `app/error.tsx` dan `app/not-found.tsx` tersedia dan berfungsi
+- `app/error.jsx` dan `app/not-found.jsx` tersedia dan berfungsi
 - Semua tautan navigasi menuju halaman yang benar-benar ada; tanpa kontrol mati

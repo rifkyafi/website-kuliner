@@ -17,10 +17,10 @@ Tidak masuk: pemesanan dalam situs, status pesanan, akun pengguna, menulis ulasa
 
 | Milestone | Isi | Keluaran | Definisi selesai |
 |---|---|---|---|
-| M0 Fondasi | merapikan repo dan konfigurasi | `app/layout.tsx`, `app/page.tsx`, token warna di `globals.css`, konfigurasi TS, ESLint, Vitest | `npm run build`, `typecheck`, `lint`, `test` semuanya lulus; halaman kosong tampil |
-| M1 Data dan tipe | skema Zod, seed [DATA CONTOH] 6-8 restoran, util format | `lib/schemas.ts`, `data/restaurants.ts`, `lib/format.ts` | seed lolos validasi skema; unit test format lulus |
-| M2 Halaman inti | beranda, `/cari`, kartu restoran, filter, chip status | `app/page.tsx`, `app/cari/page.tsx`, komponen kartu | klik semua kontrol tercatat; state kosong bekerja; keyboard berurutan |
-| M3 Detail restoran | menu, ulasan, rating, peta, tombol WhatsApp | `app/restoran/[slug]/page.tsx` dan komponen pendukung | 404 bekerja; semua foto berdimensi; tautan wa.me membuka dengan benar |
+| M0 Fondasi | merapikan repo dan konfigurasi | `app/layout.jsx`, `app/page.jsx`, token warna di `globals.css`, jsconfig, ESLint, Vitest | `npm run build`, `lint`, `test` semuanya lulus; halaman kosong tampil |
+| M1 Data dan skema | skema Zod, seed [DATA CONTOH] 6-8 restoran, util format | `lib/schemas.js`, `data/restaurants.js`, `lib/format.js` | seed lolos validasi skema; unit test format lulus |
+| M2 Halaman inti | beranda, `/cari`, kartu restoran, filter, chip status | `app/page.jsx`, `app/cari/page.jsx`, komponen kartu | klik semua kontrol tercatat; state kosong bekerja; keyboard berurutan |
+| M3 Detail restoran | menu, ulasan, rating, peta, tombol WhatsApp | `app/restoran/[slug]/page.jsx` dan komponen pendukung | 404 bekerja; semua foto berdimensi; tautan wa.me membuka dengan benar |
 | M4 Perbaikan dan gate | aksesibilitas, kontras, uji usability, performa gambar | laporan rilis dengan catatan uji klik | gate rilis di `09-panduan-pengembangan.md` lulus; uji 5 pengguna tercatat |
 
 Urutan pengerjaan per anggota boleh paralel, tetapi M1 harus selesai sebelum M2 dan M3 dimulai (komponen butuh tipe dan seed).

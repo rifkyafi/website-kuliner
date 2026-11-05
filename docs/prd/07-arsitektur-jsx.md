@@ -1,4 +1,4 @@
-# 07. Arsitektur dan TypeScript
+# 07. Arsitektur dan JSX
 
 ## Stack
 
@@ -6,82 +6,76 @@
 |---|---|
 | Next.js 16 App Router | sudah terpasang di repo; SSR dan SEO cocok untuk katalog; `next/image` untuk foto |
 | React 19 | bawaan Next 16 |
-| TypeScript strict | kesalahan tertangkap saat menulis; mendukung aturan .tsx dari pemilik proyek |
+| JavaScript dan JSX | keputusan pemilik proyek: komponen `.jsx`, modul `.js`; tanpa TypeScript |
 | Tailwind CSS 4 | konsistensi gaya cepat; token warna langsung dari DESIGN.md |
 | Vitest + Testing Library | menggantikan sisa react-scripts (CRA); kompatibel dengan Testing Library yang sudah terpasang |
-| Zod | validasi seed dan sumber tipe tunggal (lihat `08-model-data.md`) |
+| Zod | validasi runtime saat data dimuat; tanpa tipe turunan |
 
 ## Struktur folder
 
 ```
 app/
-  layout.tsx
-  page.tsx
+  layout.jsx
+  page.jsx
   globals.css
   cari/
-    page.tsx
+    page.jsx
   restoran/
     [slug]/
-      page.tsx
-  error.tsx
-  not-found.tsx
+      page.jsx
+  error.jsx
+  not-found.jsx
 components/
   ui/
-    StatusBadge.tsx
-    Chip.tsx
+    StatusBadge.jsx
+    Chip.jsx
   restaurants/
-    RestaurantCard.tsx
-    MenuList.tsx
-    ReviewList.tsx
-    RatingStars.tsx
-    MapEmbed.tsx
+    RestaurantCard.jsx
+    MenuList.jsx
+    ReviewList.jsx
+    RatingStars.jsx
+    MapEmbed.jsx
   search/
-    SearchBar.tsx
-    FilterPanel.tsx
+    SearchBar.jsx
+    FilterPanel.jsx
 lib/
-  schemas.ts
-  format.ts
+  schemas.js
+  format.js
 data/
-  restaurants.ts
-  menus.ts
-  reviews.ts
-types/
-  index.ts
+  restaurants.js
+  menus.js
+  reviews.js
 ```
 
 ## Aturan file (keputusan pemilik proyek, berlaku mutlak)
 
-1. Semua komponen dan route berekstensi `.tsx`, tanpa pengecualian.
-2. Modul tanpa JSX (lib, data, types, konfigurasi) berekstensi `.ts`.
-3. `.js` dan `.jsx` dilarang di seluruh repo; `allowJs: false` di tsconfig menjaga aturan ini secara otomatis.
+1. Semua komponen dan route berekstensi `.jsx`, tanpa pengecualian.
+2. Modul tanpa JSX (lib, data, konfigurasi) berekstensi `.js`; konfigurasi yang butuh ESM murni memakai `.mjs`.
+3. File `.ts` dan `.tsx` tidak dipakai. Keputusan ini menggantikan aturan `.tsx` sebelumnya (berubah pada 2026-11-04).
 4. URL bahasa Indonesia (`/cari`, `/restoran/[slug]`) karena dibaca pengguna; nama kode bahasa Inggris karena mudah dicari di dokumentasi.
 5. Komponen default Server Component; `"use client"` hanya untuk komponen dengan interaksi nyata (FilterPanel, SearchBar).
 
 ## Adapter data
 
-Komponen tidak mengimpor seed secara langsung; semua lewat fungsi async:
+Komponen tidak mengimpor seed secara langsung; semua lewat fungsi async di `data/`:
 
-```ts
-export async function getRestaurants(): Promise<Restaurant[]>;
-export async function getRestaurant(slug: string): Promise<Restaurant | null>;
-export async function getMenu(restaurantId: string): Promise<MenuItem[]>;
-export async function getReviews(restaurantId: string): Promise<Review[]>;
+```js
+export async function getRestaurants() { /* seluruh restoran */ }
+export async function getRestaurant(slug) { /* satu restoran atau null */ }
+export async function getMenu(restaurantId) { /* daftar menu */ }
+export async function getReviews(restaurantId) { /* daftar ulasan */ }
 ```
 
 Alasan: saat backend tersedia, isi fungsi diganti tanpa menyentuh satu komponen pun.
 
 Halaman detail memakai params versi React 19 (berbentuk Promise):
 
-```tsx
-// app/restoran/[slug]/page.tsx
+```jsx
+// app/restoran/[slug]/page.jsx
 import { notFound } from "next/navigation";
 import { getRestaurant } from "@/data/restaurants";
 
-type RestaurantPageProps = {
-  params: Promise<{ slug: string }>;
-};
-
-export default async function RestaurantPage({ params }: RestaurantPageProps) {
+export default async function RestaurantPage({ params }) {
   const { slug } = await params;
   const restaurant = await getRestaurant(slug);
   if (restaurant === null) notFound();
@@ -89,23 +83,17 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
 }
 ```
 
-## Kerangka komponen inti (.tsx, tipe eksplisit)
+## Kerangka komponen inti (JSX murni, tanpa anotasi tipe)
 
-```tsx
-// components/ui/StatusBadge.tsx
-import type { RestaurantStatus } from "@/types";
-
-type StatusBadgeProps = {
-  status: RestaurantStatus;
-};
-
-const LABEL: Record<RestaurantStatus, string> = {
+```jsx
+// components/ui/StatusBadge.jsx
+const LABEL = {
   buka: "Buka sekarang",
   tutup: "Tutup",
   sibuk: "Sedang sibuk",
 };
 
-export function StatusBadge({ status }: StatusBadgeProps) {
+export function StatusBadge({ status }) {
   return (
     <span className={`status-badge status-badge-${status}`}>
       <span className="status-badge-dot" aria-hidden="true" />
@@ -117,18 +105,13 @@ export function StatusBadge({ status }: StatusBadgeProps) {
 
 Titik pada chip menandai status nyata (buka, tutup, sibuk), bukan dekorasi; karena itu boleh dipakai dan wajib disertai teks.
 
-```tsx
-// components/restaurants/RestaurantCard.tsx
+```jsx
+// components/restaurants/RestaurantCard.jsx
 import Image from "next/image";
 import Link from "next/link";
 import { StatusBadge } from "@/components/ui/StatusBadge";
-import type { Restaurant } from "@/types";
 
-type RestaurantCardProps = {
-  restaurant: Restaurant;
-};
-
-export function RestaurantCard({ restaurant }: RestaurantCardProps) {
+export function RestaurantCard({ restaurant }) {
   return (
     <article className="rounded-xl bg-white p-4 shadow-none">
       <Image
@@ -198,14 +181,14 @@ Alasan token di CSS: satu sumber kebenaran bersama DESIGN.md, dan Tailwind 4 men
 
 ## Gambar
 
-- `next/image` selalu dengan `width` dan `height` (atau rasio via className dengan `aspect-ratio`)
+- `next/image` selalu dengan `width` dan `height` (atau rasio via `aspect-ratio` pada className)
 - Foto utama atas layar diberi prop `priority` (prioritas tinggi, tidak lazy)
 - Daftar kartu: dimuat lazy otomatis oleh `next/image` untuk yang di bawah fold
 
 ## Testing
 
-```ts
-// vitest.config.ts
+```js
+// vitest.config.mjs
 import react from "@vitejs/plugin-react";
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "vitest/config";
@@ -214,7 +197,8 @@ export default defineConfig({
   plugins: [react()],
   test: {
     environment: "jsdom",
-    setupFiles: ["./vitest.setup.ts"],
+    setupFiles: ["./vitest.setup.js"],
+    passWithNoTests: true,
   },
   resolve: {
     alias: {
@@ -224,15 +208,15 @@ export default defineConfig({
 });
 ```
 
-```ts
-// vitest.setup.ts
+```js
+// vitest.setup.js
 import "@testing-library/jest-dom/vitest";
 ```
 
 Contoh test util:
 
-```ts
-// lib/format.test.ts
+```js
+// lib/format.test.js
 import { describe, expect, it } from "vitest";
 import { formatRupiah } from "@/lib/format";
 
@@ -245,8 +229,8 @@ describe("formatRupiah", () => {
 
 Contoh test komponen (memastikan status bukan warna saja):
 
-```tsx
-// components/ui/StatusBadge.test.tsx
+```jsx
+// components/ui/StatusBadge.test.jsx
 import { render, screen } from "@testing-library/react";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 
@@ -264,12 +248,12 @@ import { FlatCompat } from "@eslint/eslintrc";
 
 const compat = new FlatCompat({ baseDirectory: import.meta.dirname });
 
-const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
-];
+const eslintConfig = [...compat.extends("next/core-web-vitals")];
 
 export default eslintConfig;
 ```
+
+Preset `next/typescript` tidak dipakai karena proyek JavaScript; aturan ekstensi file tetap ditegakkan lewat NFR-07 dan review.
 
 Skrip `package.json` hasil M0:
 
@@ -280,23 +264,38 @@ Skrip `package.json` hasil M0:
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest"
   }
 }
 ```
 
-Perubahan `tsconfig.json` pada M0:
+Alias impor `@/*` (pengganti `paths` milik tsconfig):
 
-- `strict: true` (dari `false`)
-- `allowJs: false` (dari `true`)
-- `noUncheckedIndexedAccess: true`
-- `paths`: `"@/*": ["./*"]` dengan `baseUrl: "."`
+```json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
+  "exclude": ["node_modules", ".next"]
+}
+```
+
+File di atas bernama `jsconfig.json`, dibaca editor dan Next.js untuk alias serta bantuan navigasi.
 
 ## Konvensi penamaan
 
-- Komponen: PascalCase, file `.tsx`, satu komponen utama per file
-- Fungsi util dan skema: camelCase, file `.ts`
-- Tipe: PascalCase; field bahasa Inggris; nilai enum yang tampil ke pengguna bahasa Indonesia ("buka", "tutup", "sibuk")
+- Komponen: PascalCase, file `.jsx`, satu komponen utama per file
+- Fungsi util dan skema: camelCase, file `.js`
 - Branch: `m1-model-data`, `fitur/filter-harga`; commit kecil dengan pesan menjelaskan perubahan
+
+## Migrasi repo dari TypeScript (bagian M0)
+
+1. Hapus `tsconfig.json` dan `next-env.d.ts`.
+2. Copot dependensi TypeScript: `npm uninstall typescript @types/node @types/react`.
+3. Ganti nama file `.tsx` menjadi `.jsx` dan `.ts` menjadi `.js`; mulai dari `app/pages/homepage.tsx` yang dipindah menjadi `app/page.jsx`.
+4. Buat `jsconfig.json` (isi di atas).
+5. Jalankan `npm run build` untuk memastikan Next.js berjalan dalam mode JavaScript tanpa sisa konfigurasi TypeScript.

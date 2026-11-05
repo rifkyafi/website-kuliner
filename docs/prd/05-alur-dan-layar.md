@@ -22,7 +22,7 @@ Turunan langsung langkah 5.4 laporan riset (susun user flow untuk Nadia dan Raka
 
 | Route | Tujuan | Komponen utama | State wajib |
 |---|---|---|---|
-| `/` | titik masuk, pencarian, sorotan | SearchBar, RestaurantCard, StatusBadge | memuat, kosong, siap; error lewat `error.tsx` |
+| `/` | titik masuk, pencarian, sorotan | SearchBar, RestaurantCard, StatusBadge | memuat, kosong, siap; error lewat `error.jsx` |
 | `/cari` | hasil pencarian dan filter | FilterPanel, SearchBar, RestaurantCard | memuat, kosong hasil filter (dengan saran), siap |
 | `/restoran/[slug]` | detail satu restoran | MenuList, ReviewList, RatingStars, MapEmbed, JamBuka, tombol WhatsApp | 404 slug tak dikenal, memuat, siap |
 | halaman 404 | slug atau halaman tak dikenal | pesan singkat dan tautan kembali ke beranda | - |

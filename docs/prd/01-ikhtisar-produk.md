@@ -38,11 +38,7 @@ Yang bukan masalah: tampilan dan kemudahan memakai di HP (C4 2,23; C5 2,08, dua 
 | Jujur soal data | selama prototipe semua data berlabel [DATA CONTOH]; tanpa angka tanpa sumber |
 | Setiap tampilan data punya state kosong, memuat, error | UI yang hanya dirancang untuk kondisi ideal belum siap dipakai |
 
-## Design Read
 
-Membaca produk ini sebagai: katalog kuliner mobile-first untuk mahasiswa, bahasa visual hangat dan rapi (lihat `../../DESIGN.md`), dial ENERGY 2 / RHYTHM 2 / MOTION 1.
-
-## Metrik keberhasilan
 
 Semua metrik harus diukung sungguhan sebelum dilaporkan; yang belum diukur dinyatakan "belum diukur".
 

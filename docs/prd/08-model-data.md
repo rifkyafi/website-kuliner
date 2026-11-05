@@ -2,18 +2,17 @@
 
 ## Konvensi
 
-- Nama tipe, field, dan fungsi: bahasa Inggris. Nilai enum yang tampil langsung ke pengguna: bahasa Indonesia ("buka", "tutup", "sibuk").
-- Skema Zod adalah sumber tunggal tipe; tipe hasil `z.infer` diimpor, tidak ditulis dua kali.
+- Proyek memakai JavaScript + JSX (tanpa TypeScript). Skema Zod tetap dipakai untuk validasi runtime saat data dimuat; hasil parse dipakai apa adanya, tanpa tipe turunan.
+- Nama field dan fungsi: bahasa Inggris. Nilai enum yang tampil langsung ke pengguna: bahasa Indonesia ("buka", "tutup", "sibuk").
 - Field `updatedAt` wajib ada di semua entitas data: inilah dasar baris "Diperbarui [tanggal]" (FR-02, NFR-04).
 
 ## Skema
 
-```ts
-// lib/schemas.ts
+```js
+// lib/schemas.js
 import { z } from "zod";
 
 export const restaurantStatusSchema = z.enum(["buka", "tutup", "sibuk"]);
-export type RestaurantStatus = z.infer<typeof restaurantStatusSchema>;
 
 const jamSchema = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/);
 
@@ -69,51 +68,41 @@ export const reviewSchema = z.object({
   photos: z.array(reviewPhotoSchema).default([]),
   visitedOn: z.string().min(10),
 });
-
-export type Restaurant = z.infer<typeof restaurantSchema>;
-export type OpeningHour = z.infer<typeof openingHourSchema>;
-export type MenuItem = z.infer<typeof menuItemSchema>;
-export type Review = z.infer<typeof reviewSchema>;
-export type ReviewPhoto = z.infer<typeof reviewPhotoSchema>;
 ```
 
-`price` memakai `nullable()` dengan sengaja: item tanpa harga adalah kondisi nyata yang harus ditampilkan "harga belum tersedia" (FR-01), bukan disembunyikan atau diisi nol.
+`price` memakai `nullable()` dengan sengaja: item tanpa harga adalah kondisi nyata yang harus ditampilkan "harga belum tersedia" (FR-01), bukan disembunyikan atau diisi nol. Di JavaScript, cek dengan `item.price === null`.
 
 ## State tampilan data
 
-```ts
-// types/index.ts
-export type DataState<T> =
-  | { status: "loading" }
-  | { status: "empty" }
-  | { status: "error"; message: string }
-  | { status: "ready"; data: T };
-```
+Tanpa TypeScript, state tetap distandarkan sebagai bentuk objek berikut. Setiap tampilan data wajib menangani keempatnya lewat `switch` atau pemetaan yang setara:
 
-Alasan: union diskriminan memaksa komponen menangani keempat state lewat `switch` yang cakupannya diperiksa TypeScript. NFR-06 ditegakkan oleh tipe, bukan oleh ingatan developer.
+| State | Bentuk objek |
+|---|---|
+| memuat | `{ status: "loading" }` |
+| kosong | `{ status: "empty" }` |
+| error | `{ status: "error", message: "penyebab" }` |
+| siap | `{ status: "ready", data: [...] }` |
+
+Alasan: bentuk seragam membuat penanganan state mudah diperiksa saat code review dan uji klik; NFR-06 diverifikasi lewat test perilaku dan catatan uji, bukan lewat tipe.
 
 ## Adapter dan seed
 
-```ts
-// data/restaurants.ts
-import { restaurantSchema, type Restaurant } from "@/lib/schemas";
+```js
+// data/restaurants.js
+import { restaurantSchema } from "@/lib/schemas";
 
 // DATA CONTOH: ganti dengan data nyata sebelum rilis.
-const seed: unknown = [
+const seed = [
   /* 6-8 restoran contoh */
 ];
 
-export const restaurants: Restaurant[] = restaurantSchema
-  .array()
-  .parse(seed);
+export const restaurants = restaurantSchema.array().parse(seed);
 
-export async function getRestaurants(): Promise<Restaurant[]> {
+export async function getRestaurants() {
   return restaurants;
 }
 
-export async function getRestaurant(
-  slug: string,
-): Promise<Restaurant | null> {
+export async function getRestaurant(slug) {
   return restaurants.find((r) => r.slug === slug) ?? null;
 }
 ```
@@ -129,9 +118,9 @@ Aturan seed:
 
 ## Util format
 
-```ts
-// lib/format.ts
-export function formatRupiah(value: number): string {
+```js
+// lib/format.js
+export function formatRupiah(value) {
   return new Intl.NumberFormat("id-ID", {
     style: "currency",
     currency: "IDR",
@@ -139,7 +128,7 @@ export function formatRupiah(value: number): string {
   }).format(value);
 }
 
-export function formatTanggal(iso: string): string {
+export function formatTanggal(iso) {
   return new Intl.DateTimeFormat("id-ID", {
     day: "numeric",
     month: "short",
@@ -150,8 +139,8 @@ export function formatTanggal(iso: string): string {
 
 ## Pesan WhatsApp (FR-08)
 
-```ts
-export function pesanWhatsApp(nomor: string, namaRestoran: string): string {
+```js
+export function pesanWhatsApp(nomor, namaRestoran) {
   const teks = encodeURIComponent(
     `Halo, saya mau bertanya dan memesan dari ${namaRestoran}.`,
   );

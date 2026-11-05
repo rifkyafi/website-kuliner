@@ -14,8 +14,8 @@ Sumber riset: `Desain Web_Riset Pengguna_Kelompok 1.md` di root repo. Semua angk
 | 04-kebutuhan-nonfungsional.md | NFR mobile, aksesibilitas, performa, kejujuran data | developer, QA |
 | 05-alur-dan-layar.md | alur pengguna dan inventaris layar beserta state wajibnya | developer, desainer |
 | 06-lingkup-dan-milestone.md | MVP, fase 2, milestone M0 sampai M4, risiko | semua anggota |
-| 07-arsitektur-typescript.md | stack, struktur folder, aturan .tsx, testing | developer |
-| 08-model-data.md | skema Zod, tipe, seed [DATA CONTOH], util format | developer |
+| 07-arsitektur-jsx.md | stack, struktur folder, aturan .jsx, testing | developer |
+| 08-model-data.md | skema Zod, aturan state data, seed [DATA CONTOH], util format | developer |
 | 09-panduan-pengembangan.md | langkah M0, alur git, definisi selesai, gate rilis | developer |
 
 Arah visual: `DESIGN.md` di root repo.
@@ -32,3 +32,4 @@ Arah visual: `DESIGN.md` di root repo.
 | Versi | Tanggal | Perubahan |
 |---|---|---|
 | 0.1 | 2026-11-04 | draf awal dari hasil riset dan sesi keputusan (data seed statis, pemesanan via tautan WhatsApp, aturan .tsx, struktur 10 file) |
+| 0.2 | 2026-11-04 | beralih dari TypeScript ke JavaScript + JSX: komponen `.jsx`, modul `.js`, `jsconfig.json` menggantikan `tsconfig.json`, nama dokumen 07 berubah, NFR-07 disesuaikan |

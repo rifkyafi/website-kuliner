@@ -4,23 +4,23 @@ Dokumen ini adalah panduan kerja, bukan sekadar rencana: kerjakan M0 dulu sekali
 
 ## M0: fondasi (sekali, sebelum fitur apa pun)
 
-Repo saat ini masih membawa sisa setup CRA dan konfigurasi longgar. Urutan pengerjaan:
+Repo saat ini masih membawa sisa setup CRA, konfigurasi TypeScript, dan file `.tsx`. Urutan pengerjaan:
 
-1. `package.json`: hapus skrip `test` (react-scripts) dan `eject`; hapus blok `eslintConfig` dan `browserslist`. Tambahkan skrip hasil M0 (lihat `07-arsitektur-typescript.md`).
-2. Pasang alat: `npm i -D vitest @vitejs/plugin-react jsdom eslint eslint-config-next @eslint/eslintrc`
-3. Buat `vitest.config.ts` dan `vitest.setup.ts` (isi di dokumen 07).
-4. Ubah `tsconfig.json`: `strict: true`, `allowJs: false`, `noUncheckedIndexedAccess: true`, `baseUrl: "."`, `paths: { "@/*": ["./*"] }`.
-5. Buat `eslint.config.mjs` (isi di dokumen 07); hapus blok `eslintConfig` dari package.json sudah dilakukan di langkah 1.
-6. Hapus `tailwind.config.js` (Tailwind 4 mendeteksi konten otomatis; glob lama salah). Buat `app/globals.css` berisi `@import "tailwindcss"` dan token `@theme` dari DESIGN.md.
-7. Hapus `app/pages/homepage.tsx` dan foldernya; buat `app/page.tsx` serta `app/layout.tsx` (font Plus Jakarta Sans lewat `next/font/google`, `lang="id"`, metadata title "Website Kuliner").
-8. Komit: `M0: fondasi repo (route, tsconfig, vitest, eslint, tailwind tokens)`.
+1. `package.json`: hapus skrip `test` (react-scripts) dan `eject`; hapus blok `eslintConfig` dan `browserslist`. Tambahkan skrip hasil M0 (lihat `07-arsitektur-jsx.md`).
+2. Copot dependensi TypeScript: `npm uninstall typescript @types/node @types/react`
+3. Pasang alat: `npm i -D vitest @vitejs/plugin-react jsdom eslint eslint-config-next @eslint/eslintrc`
+4. Hapus `tsconfig.json` dan `next-env.d.ts`; buat `jsconfig.json` (isi di dokumen 07).
+5. Buat `vitest.config.mjs` dan `vitest.setup.js` (isi di dokumen 07).
+6. Buat `eslint.config.mjs` dengan preset `next/core-web-vitals` (isi di dokumen 07).
+7. Hapus `tailwind.config.js` (Tailwind 4 mendeteksi konten otomatis; glob lama salah). Buat `app/globals.css` berisi `@import "tailwindcss"` dan token `@theme` dari DESIGN.md.
+8. Hapus `app/pages/homepage.tsx` dan foldernya; buat `app/page.jsx` serta `app/layout.jsx` (font Plus Jakarta Sans lewat `next/font/google`, `lang="id"`, metadata title "Website Kuliner").
+9. Komit: `M0: fondasi repo (JSX, jsconfig, vitest, eslint, tailwind tokens)`.
 
 Verifikasi M0 (semua harus lulus):
 
 ```bash
 npm run dev        # halaman "Website Kuliner" tampil tanpa error konsol
 npm run build      # sukses
-npm run typecheck  # sukses tanpa error
 npm run lint       # sukses
 npm run test       # sukses (belum ada test pun harus hijau)
 ```
@@ -29,13 +29,13 @@ npm run test       # sukses (belum ada test pun harus hijau)
 
 1. Satu branch per unit kerja: `m1-model-data`, `fitur/filter-harga`.
 2. Commit kecil; pesan commit menjelaskan apa yang berubah dan mengapa bila tidak jelas.
-3. Sebelum mengajukan review: `npm run lint && npm run typecheck && npm run test`.
+3. Sebelum mengajukan review: `npm run lint && npm run test`.
 4. Satu anggota lain mereview sebelum merge ke main; reviewer memakai daftar periksa definisi selesai di bawah.
-5. Banyak anggota mengerjakan bersamaan: patok urutan M1 dulu (tipe dan seed), baru M2 dan M3 paralel.
+5. Banyak anggota mengerjakan bersamaan: patok urutan M1 dulu (skema dan seed), baru M2 dan M3 paralel.
 
 ## Definisi selesai (berlaku setiap milestone)
 
-- [ ] `lint`, `typecheck`, `test` lulus
+- [ ] `lint` dan `test` lulus
 - [ ] Semua kontrol diklik dan hasilnya dicatat (format di bawah)
 - [ ] Dicek pada layar 360px: tanpa scroll horizontal, teks tidak keluar wadah
 - [ ] Navigasi keyboard berurutan dan fokus terlihat
@@ -43,6 +43,7 @@ npm run test       # sukses (belum ada test pun harus hijau)
 - [ ] Tidak ada data karangan baru; seed berlabel [DATA CONTOH]
 - [ ] Pasangan warna baru dihitung rasionya sebelum dipakai
 - [ ] Semua gambar dan iframe berdimensi
+- [ ] Tidak ada sisa file `.ts` atau `.tsx` di repo
 - [ ] PRD diperbarui bila ada keputusan yang berubah
 
 ## Format catatan uji klik
@@ -71,8 +72,9 @@ Jawab semua dengan "tidak"; satu "ya" berarti milestone belum selesai:
 
 ## Masalah umum dan penanganannya
 
-- Tes gagal menemukan file: pastikan nama file berakhiran `.test.ts` atau `.test.tsx` dan berada dalam folder yang terjangkau config.
+- Tes gagal menemukan file: pastikan nama file berakhiran `.test.js` atau `.test.jsx` dan berada dalam folder yang terjangkau config.
 - ESLint tidak berjalan: pastikan `eslint.config.mjs` ada di root, bukan di dalam `app/`.
-- Font tidak konsisten: font hanya dipasang lewat `next/font/google` di `app/layout.tsx`, jangan lewat tag `link` di komponen lain.
-- `next/image` menolak gambar eksternal: daftarkan domainnya di `next.config.ts` dengan `images.remotePatterns`, atau simpan gambar di `public/`.
+- Font tidak konsisten: font hanya dipasang lewat `next/font/google` di `app/layout.jsx`, jangan lewat tag `link` di komponen lain.
+- `next/image` menolak gambar eksternal: daftarkan domainnya di `next.config.js` dengan `images.remotePatterns`, atau simpan gambar di `public/`.
 - Peringatan hidrasi: pastikan render pertama server dan klien identik; hindari `Date.now()` langsung di badan komponen server.
+- Sisa file `.ts` atau `.tsx` terdeteksi saat build: konversi ke `.js` atau `.jsx` dan pastikan `tsconfig.json` sudah dihapus (aturan NFR-07).
